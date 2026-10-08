@@ -22,7 +22,7 @@ WHERE
     jpf.job_work_from_home = True
 GROUP BY sd.skills
 ORDER BY demand_count DESC
-LIMIT 20;
+LIMIT 10;
 
 
 
