@@ -1,3 +1,11 @@
+-- Source Table – The table from which we take data.
+-- Target Table – The table into which we want to insert, update, or delete data.
+
+-- Term	    Meaning
+-- Source	Where data comes FROM
+-- Target	Where data goes TO
+
+
 -- 1. How can we prepare the source data for synchronizing priority jobs?
 
 --CREATE TEMP Table
