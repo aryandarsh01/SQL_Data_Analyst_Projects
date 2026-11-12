@@ -7,16 +7,22 @@ SELECT 'Hello' AS TAB;
 SELECT [1, 2, 3];
 SELECT['python', 'sql', 'r'] AS skills_array;
 
+-------------------------------------------------------
 
+--table with two column. (1.skill, 2.type)
 --in a UNION ALL, SQL takes the column names from the first SELECT statement.
---SELECT statement is only for column
+--SELECT statement is only for column (and also if column is created then table is already created)
+--SELECT only display not create.
+
 SELECT 'python' AS skill
 UNION ALL
 SELECT 'sql' AS tkill
 UNION ALL
 SELECT 'r';
 
+-------------------------------------------------
 
+--table using cte
 
 WITH skills AS(
     SELECT 'python' AS skill
@@ -28,8 +34,25 @@ WITH skills AS(
 SELECT skill
 FROM Skills;
 
+-------------------------------------------------
 
+--ARRAY using cte
 
+--by ARRAY_AGG fn()
+WITH skills AS( --skills is a Table(cte).
+    SELECT 'python' AS skill --skill is a Column.
+    UNION ALL
+    SELECT 'sql' 
+    UNION ALL
+    SELECT 'r'
+)
+
+SELECT ARRAY_AGG(skill) AS skills_array   --put all the row/data of skill column into list.
+FROM skills;
+
+-------
+
+--by LIST fn()
 WITH skills AS(
     SELECT 'python' AS skill
     UNION ALL
@@ -38,9 +61,13 @@ WITH skills AS(
     SELECT 'r'
 )
 
-SELECT ARRAY_AGG(skill) AS skills_array
+SELECT LIST(skill) AS skills_array   --creating a column of list.
 FROM skills;
 
+
+-----------------------------------------------
+
+--ARRAY as cte
 
 WITH skills AS(
     SELECT 'python' AS skill
@@ -48,24 +75,8 @@ WITH skills AS(
     SELECT 'sql' 
     UNION ALL
     SELECT 'r'
-)
-
-SELECT LIST(skill) AS skills_array
-FROM skills;
-
-
-
-
-
-
-WITH skills AS(
-    SELECT 'python' AS skill
-    UNION ALL
-    SELECT 'sql' 
-    UNION ALL
-    SELECT 'r'
-), skills_array AS (
-    SELECT ARRAY_AGG(skill) AS skills
+), skills_array AS (  --creating a Table
+    SELECT ARRAY_AGG(skill) AS skills  --creating a column of list within a table.
     FROM skills
 )
 
@@ -75,7 +86,9 @@ SELECT
     skills[3] AS third_skill
 FROM skills_array;
 
+----------------------------------------------------
 
+--order in ARRAY/LIST
 
 WITH skills AS(
     SELECT 'python' AS skill
@@ -99,14 +112,19 @@ FROM skills_array;
 
 --###############################################
 
+--STRUCT
 
+-- STRUCT  (A python Dictionary:- 'key':value pair/pairs seperated by coma, enclosed in curly braxket {} .)
+SELECT {skill: 'python'};
+SELECT MAP{'skill' : 'python'};
+SELECT '{"skill":"python"}':: JSON;
 
--- STRUCT
+SELECT {skill: 'python'} AS skill_struct;
+
 SELECT {skill: 'python', type: 'programming'} AS skill_struct;
 --skill and type are field.
 --STRUCT have fields.
 
-SELECT {skill: 'python'} AS skill_struct;
 
 --other way of creating a struct
 
@@ -360,9 +378,11 @@ FROM skills_array_struct;
 
 
 
---MAP
+--MAP (A python Dictionary:- key:value pair/pairs seperated by coma, enclosed in curly braxket {} .)
 
+SELECT {skill: 'python'}
 SELECT MAP{'skill' : 'python'};
+SELECT '{"skill":"python"}':: JSON;
 
 SELECT MAP{skill : 'python'};
 
@@ -378,8 +398,8 @@ WITH skill_map AS (
     SELECT MAP{'skill' : 'python', 'type' : 'programming'} AS skill_type
 )
 SELECT
-    skill_type['skill'],
-    skill_type['type']
+    skill_type['skill'], --give me value of key(skill) (key:value present in column skill_type) as a row of a column.
+    skill_type['type']   --give me value of key(type) (key:value present in column skill_type) as a row of a column.
 FROM
     skill_map;
 
@@ -390,13 +410,17 @@ FROM
 
 
 
---JSON
+--JSON (A python Dictionary:- "key":"value" pair/pairs seperated by coma, enclosed in curly braxket {} .)
 
-
+SELECT {skill: 'python'}
+SELECT MAP{'skill' : 'python'};
+SELECT '{"skill":"python"}':: JSON;
 
 
 SELECT
     '{"skill":"python", "type":"programming"}'::JSON AS skill_json;
+
+
 
 --SELECT
 --    TO_JSON('{"skill":"python", "type":"programming"}') AS skill_json;
@@ -419,12 +443,15 @@ FROM raw_skill_json;
 
 ----------------------------------------------
 
+--JSON_EXTRACT_STRING() extracts a value from a JSON and returns that value as a VARCHAR (text/string).
+
 WITH raw_skill_json AS (
     SELECT
         '{"skill":"python", "type":"programming"}'::JSON AS skill_json
 )
 SELECT
-    json_extract_string(skill_json, '$') AS
+    json_extract_string(skill_json, '$') AS --json_extract_string:- take a single json object(single curly{}) with one or more key value pair)
+                                            --Here column available with json object in single row.
     s
 FROM raw_skill_json;
 
@@ -445,11 +472,23 @@ FROM raw_skill_json;
 
 ---------------------------------------------------
 
+WITH raw_skill_json AS (
+    SELECT
+        '{"skill":"python", "type":"programming"}'::JSON AS skill_json 
+)
+SELECT
+        json_extract_string(skill_json, '$.skill'),
+        json_extract_string(skill_json, '$.type')
+    
+FROM raw_skill_json;
+
+
+------------
 
 
 WITH raw_skill_json AS (
     SELECT
-        '{"skill":"python", "type":"programming"}'::JSON AS skill_json
+        '{"skill":"python", "type":"programming"}'::JSON AS skill_json 
 )
 SELECT
     STRUCT_PACK(
@@ -461,17 +500,37 @@ FROM raw_skill_json;
 
 ---------------------------------------------------
 
+--ARRAY of JSON to STRUCT
 
---JSON to ARRAY of STRUCT
-
-
---json_each() takes the JSON array and expands its elements into separate rows.
---Each e.value is one JSON object.
 WITH raw_json As(
     SELECT
         '[
           {"skill":"python", "type":"programming"},
           {"skill":"sql", "type":"query_language"},
+          {"skill":"r", "type":"programming"}
+        ]' :: JSON AS skills_json
+)
+SELECT
+    STRUCT_PACK(
+            skill := json_extract_string(e.value, '$.skill'),
+            type := json_extract_string(e.value, '$.type')
+        ) AS skills
+FROM raw_json, json_each(skills_json) AS e;
+
+
+-----------------------------------------------------
+
+
+--ARRAY of JSON to ARRAY of STRUCT
+
+
+--json_each() takes out the individual json object from json array.
+--Each e.value is one JSON object.
+WITH raw_json As(
+    SELECT
+        '[
+          {"skill":"python", "type":"programming"},
+          {"skill":"sql", "type":"query_language"},-
           {"skill":"r", "type":"programming"}
         ]' :: JSON AS skills_json
 )
@@ -752,10 +811,11 @@ SELECT
     jpf.job_id,
     jpf.job_title_short,
     jpf.salary_year_avg,
-    ARRAY_AGG(
-        STRUCT_PACK(--making pairs of field:value pair using value from two columns and their common rows & specified field.
-            skill_type := sd.type,
-            skill_name := sd.skills
+    ARRAY_AGG( --making array of struct)
+        STRUCT_PACK(--making two pair of field:value pair (:- as one struct) using value from two columns and their common row (from groupby table) with specified field.
+                    --Groupby table is a result of mini tables formed based on simiilarity using large table.
+            skill_type := sd.type,--one pair
+            skill_name := sd.skills--another pair
         )
     ) AS skills_type
 FROM job_postings_fact AS jpf
