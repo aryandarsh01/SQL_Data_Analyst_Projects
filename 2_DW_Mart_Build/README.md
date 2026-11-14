@@ -87,7 +87,7 @@ Priority role tracking with incremental updates using MERGE operations.
 - **Grain:** One row per job posting with priority level assignment
 - **Key Features:** **MERGE operations for incremental updates** - demonstrates production-ready upsert patterns (INSERT, UPDATE, DELETE in single statement)
 
-## 💻 Data Engineering Skills Demonstrated
+## 💻 Data Analytics Skills Demonstrated
 
 ### ETL Pipeline Development
 
