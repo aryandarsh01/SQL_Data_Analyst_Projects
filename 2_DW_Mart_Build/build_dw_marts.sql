@@ -17,3 +17,12 @@
 
 -- Step 6: Mart - Update priority mart
 .read 06_update_priority_mart.sql
+
+
+
+
+--duckdb md:
+--.databses
+--CREATE DATABASw_marts;
+--.databases
+--duckdb md:dw_marts -c ".read build_dw_marts.sql"
