@@ -4,6 +4,8 @@ An end-to-end data analytics pipeline that transforms raw CSV files from Google 
 
 ![Data Pipeline Architecture](../Images/1_2_Project2_Data_Pipeline.png)
 
+---
+
 ## 🧾 Executive Summary
 ✅ Pipeline scope: Built an end-to-end data analytics pipeline, transforming raw CSV files into a structured star schema data warehouse and analytical data marts.
 
@@ -13,6 +15,7 @@ An end-to-end data analytics pipeline that transforms raw CSV files from Google 
 
 ✅ Analytical data marts: Developed specialized data marts (flat, skills, and priority) with additive measures and incremental update patterns to support efficient data analysis and reporting.
 
+---
 
 ## 🧩 Problem & Context
 
@@ -26,6 +29,8 @@ Raw job posting data is stored in flat CSV files in Google Cloud Storage, making
 
 **Solution:** Developed an end-to-end data analytics pipeline that extracts raw CSV files from Google Cloud Storage, transforms and organizes the data into a star schema data warehouse (separating fact and dimension tables), and builds specialized analytical data marts for flat data analysis, skill demand analysis, and priority role tracking.
 
+---
+
 ## 🧰 Tech Stack
 
 🐤 Database: DuckDB (file-based OLAP database with GCS integration via httpfs)
@@ -35,6 +40,23 @@ Raw job posting data is stored in flat CSV files in Google Cloud Storage, making
 🔧 Automation: Master SQL script for pipeline orchestration
 📦 Version Control: Git/GitHub for versioned pipeline scripts
 ☁️ Storage: Google Cloud Storage for source CSV files
+
+---
+
+## 📂 Repository Structure
+
+```text
+2_WH_Mart_Build/
+├── 01_create_tables_dw.sql        # Star schema DDL
+├── 02_load_schema_dw.sql          # GCS data extraction & loading
+├── 03_create_flat_mart.sql        # Denormalized flat mart
+├── 04_create_skills_mart.sql      # Skills demand mart
+├── 05_create_priority_mart.sql    # Priority roles mart
+├── 06_update_priority_mart.sql    # Priority mart incremental update (MERGE)
+├── build_dw_marts.sql             # Master SQL build script
+└── README.md                       # You are here
+```
+---
 
 ## 🏗️ Pipeline Architecture
 ![Data Pipeline Architecture](../Images/1_2_Project2_Data_Pipeline.png)
@@ -86,6 +108,8 @@ Priority role tracking with incremental updates using MERGE operations.
 - **Purpose:** Track priority roles and job snapshots with incremental update capabilities
 - **Grain:** One row per job posting with priority level assignment
 - **Key Features:** **MERGE operations for incremental updates** - demonstrates production-ready upsert patterns (INSERT, UPDATE, DELETE in single statement)
+
+---
 
 ## 💻 Data Analytics Skills Demonstrated
 

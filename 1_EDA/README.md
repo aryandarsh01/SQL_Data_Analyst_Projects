@@ -4,6 +4,8 @@
 
 A SQL project analyzing the data analyst job market using real world job posting data. It demonstrates my ability to **write production-quality analytical SQL, design efficient queries, and turn business questions into data-driven insights**.
 
+---
+
 ## Executive Summary
 
 - **✅ Project scope**: Built **3 analytical queries** that answer key questions about the data analyst job market
@@ -18,6 +20,8 @@ If you only have a minute, review these:
 2. [`02_top_paying_skills.sql`](02_top_paying_skills.sql) – salary analysis with aggregations
 
 3. [`03_optimal_skills.sql`](03_optimal_skills.sql) – combined demand/salary optimization query
+
+---
 
 ## Problem & Context
 Job market analysts need to answer questions like:
@@ -38,6 +42,10 @@ This project analyzes a **data warehouse** built using a star schema design. The
 
 By querying across these interconnected tables, I extracted insights about skill demand, salary patterns, and optimal skill combinations for data engineering roles.
 
+
+
+---
+
 ## Tech Stack
 
 - 🐤 **Query Engine:** DuckDB for fast OLAP-style analytical queries
@@ -45,6 +53,21 @@ By querying across these interconnected tables, I extracted insights about skill
 - 📊 **Data Model:** Star schema with fact + dimension + bridge tables
 - 🛠️ **Development:** VS Code for SQL editing + Terminal for DuckDB CLI
 - 📦 **Version Control:** Git/GitHub for versioned SQL scripts
+
+---
+
+## 📂 Repository Structure
+
+```text
+1_EDA/
+├── 01_top_demanded_skills.sql   # Demand analysis query
+├── 02_top_paying_skills.sql     # Salary analysis query
+├── 03_optimal_skills.sql        # Combined demand/salary optimization
+└── README.md                    # You are here
+```
+
+
+---
 
 ## Analysis Overview
 
@@ -65,6 +88,7 @@ By querying across these interconnected tables, I extracted insights about skill
 
 One important caveat: the salary data is based on very few salary observations for most skills (often only 1–3), so the salary figures should be treated cautiously.
 
+---
 
 ## SQL Skills Demonstrated
 
