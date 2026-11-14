@@ -1,3 +1,5 @@
+--duckdb md:jobs_mart
+
 CREATE OR REPLACE TABLE staging.priority_roles(
     role_id INTEGER PRIMARY KEY,
     role_name VARCHAR,

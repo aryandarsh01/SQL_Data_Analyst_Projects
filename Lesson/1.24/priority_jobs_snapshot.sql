@@ -159,3 +159,4 @@ The goal is to maintain the existing target table rather than rebuild it from sc
 This is commonly called synchronization or a form of incremental loading.
 */
 
+--if we create an entire new updated table then we will loss original timestamp.

@@ -1,3 +1,15 @@
+/*
+Source table	                Alias	Purpose
+data_jobs.job_postings_fact	    jpf	    Provides job posting details
+data_jobs.company_dim	        cd	    Provides company names
+staging.priority_roles	        r	    Provides priority levels for job roles
+
+Target table
+main.priority_jobs_snapshot
+*/
+
+--select CURRENT_TIMESTAMP;
+
 CREATE  OR REPLACE TABLE main.priority_jobs_snapshot(
     job_id INTEGER PRIMARY KEY,
     job_title_short VARCHAR,
@@ -7,6 +19,7 @@ CREATE  OR REPLACE TABLE main.priority_jobs_snapshot(
     priority_lvl INTEGER,
     updated_at TIMESTAMP
     );
+
 
 INSERT INTO main.priority_jobs_snapshot(
     job_id,
@@ -31,6 +44,8 @@ LEFT JOIN data_jobs.company_dim AS cd
     ON jpf.company_id = cd.company_id
 INNER JOIN staging.priority_roles AS r
     ON jpf.job_title_short = r.role_name;
+
+
 
 SELECT
     job_title_short,
