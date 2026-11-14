@@ -23,6 +23,6 @@
 
 --duckdb md:
 --.databses
---CREATE DATABASw_marts;
+--CREATE DATABASE dw_marts;
 --.databases
 --duckdb md:dw_marts -c ".read build_dw_marts.sql"
